@@ -1,0 +1,49 @@
+// routes/codeRoutes.js
+const express = require("express");
+const router = express.Router();
+const {
+  createCodeFile,
+  uploadCodeVersion,
+
+  getCodeFiles,
+  getCodeFile,
+  updateCodeFile,
+  addCollaborator,
+  submitForReview,
+
+  reviewCodeVersion,
+  deleteCodeFile,
+
+  shareCodeFile,
+  generateShareLink,
+  reviewerApprove,
+  adminApprove,
+  requestReview
+} = require("../controllers/codeController");
+const { protect, admin, reviewer } = require("../middlewares/authMiddleware");
+console.log(reviewer)
+const { upload } = require("../utils/cloudinary");
+
+// Public routes
+router.get("/files", getCodeFiles);
+router.get("/files/:id", getCodeFile);
+
+// Protected routes
+router.post("/files", protect, createCodeFile);
+router.post("/files/:id/upload", protect, upload.single('codeFile'), uploadCodeVersion);
+router.put("/files/:id", protect, updateCodeFile);
+router.post("/files/:id/collaborators", protect, addCollaborator);
+router.post("/files/:id/share", protect, shareCodeFile);
+router.post("/files/:id/share/link", protect, generateShareLink);
+router.post("/files/:id/request-review", protect, requestReview);
+router.post("/versions/:id/submit-review", protect, submitForReview);
+router.delete("/files/:id", protect, deleteCodeFile);
+
+// Reviewer routes
+router.post("/files/:id/reviewer-approve", protect, reviewer, reviewerApprove);
+
+// Admin routes
+router.post("/files/:id/admin-approve", protect, admin, adminApprove);
+router.post("/versions/:id/review", protect, admin, reviewCodeVersion);
+
+module.exports = router;
