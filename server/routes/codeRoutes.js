@@ -35,8 +35,8 @@ router.put("/files/:id", protect, updateCodeFile);
 router.post("/files/:id/collaborators", protect, addCollaborator);
 router.post("/files/:id/share", protect, shareCodeFile);
 router.post("/files/:id/share/link", protect, generateShareLink);
-router.post("/files/:id/request-review", protect, requestReview);
-router.post("/versions/:id/submit-review", protect, submitForReview);
+// router.post("/files/:id/request-review", protect, requestReview);
+// router.post("/versions/:id/submit-review", protect, submitForReview);
 router.delete("/files/:id", protect, deleteCodeFile);
 
 // Reviewer routes
